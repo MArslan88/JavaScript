@@ -1,11 +1,11 @@
 const days = ['Mon','Tue','Wed','Thr','Fri','Sat']
 
-//console.log(days[0])
+console.log(days[0])
 
-//days.forEach(function(day, index){
-  //  console.log(`starts with ${index+1}  --  ${day}`);
+// days.forEach(function(day, index){
+//    console.log(`starts with ${index+1}  --  ${day}`);
 
-//})
+// })
 
 // console.log(days.length)
 
