@@ -3,7 +3,7 @@ let myTodos={
     meetings: 0,
     done: 0,
 
-    // functions inside the object is called Method otherwise it is called Functions, but technically both are same ...
+    // functions inside the object is called Method otherwise it is called Functions, but technically both are same
     addMeeting: function(num){
         this.meetings = this.meetings + num;  // 'this' will reffer to the refference of the present object like 'myTodos'
     },
