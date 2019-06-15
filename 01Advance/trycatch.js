@@ -18,7 +18,7 @@ try {
     
 }
 
-// with the use of trycatch this line will also be run whether program will crash or not, 
+// with the use of trycatch this line will also be run whether program will crash or not....!
 console.log('i will not run if program crashes');
 
 
