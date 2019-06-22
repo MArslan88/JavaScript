@@ -23,12 +23,16 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText UserEmaill, UserPassword;
     private TextView AlreadyHaveAccountLink;
 
+    private FirebaseAuth mAuth;
+    private ProgressDialog loadingBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        mAuth = FirebaseAuth.getInstance(); // that was creating a problem so i added this com.google.gms:google-services:4.2.0 in the gradle project
 
         InitializeFields(); // initializing the components
 
@@ -38,10 +42,54 @@ public class RegisterActivity extends AppCompatActivity {
                 SendUserToLoginActivity();
             }
         });
+
+        CreateAccountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CreateNewAccount();
+            }
+        });
     }
 
+    private void CreateNewAccount() {
+        String email = UserEmaill.getText().toString();
+        String password = UserPassword.getText().toString();
 
+        if(TextUtils.isEmpty(email)){
+            Toast.makeText(this, "Please Enter Email...", Toast.LENGTH_SHORT).show();
+        }
+        if(TextUtils.isEmpty(password)){
+            Toast.makeText(this, "Please Enter Password...", Toast.LENGTH_SHORT).show();
+        }
+        else{ // if both field are not empty then
+            // for LoadingBar during the account creation
+            loadingBar.setTitle("Creating New Account");
+            loadingBar.setMessage("Please wait, while we are creating new account for you...");
 
+            // if user will touch the screen then loadingBar will not disappear until the account has been created
+            loadingBar.setCanceledOnTouchOutside(true);
+            loadingBar.show(); // this will show the loading bar on the screen
+
+            //create an account for the user
+            mAuth.createUserWithEmailAndPassword(email,password)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                                SendUserToLoginActivity(); // when account is created successfully then send the user to LoginActivity to login
+                                Toast.makeText(RegisterActivity.this, "Account Created Successfully...", Toast.LENGTH_SHORT).show();
+                                loadingBar.dismiss(); // when account is created then dismiss the loadingBar
+                            }else{ // if any error occur
+                                String message = task.getException().toString(); // it will the error from the Exception
+                                // and that error into Toast message
+                                Toast.makeText(RegisterActivity.this, "Error: "+message, Toast.LENGTH_SHORT).show();
+                                loadingBar.dismiss(); // if any Error occur then dismiss the loadingBar also
+
+                            }
+                        }
+                    });
+        }
+    }
 
     private void InitializeFields() {
         CreateAccountButton = (Button)findViewById(R.id.register_button);
@@ -49,6 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
         UserPassword = (EditText)findViewById(R.id.register_password);
         AlreadyHaveAccountLink = (TextView)findViewById(R.id.already_have_account_link);
 
+        loadingBar = new ProgressDialog(this);
     }
 
     private void SendUserToLoginActivity() {
