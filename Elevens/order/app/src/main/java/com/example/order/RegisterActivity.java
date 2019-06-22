@@ -76,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
-                                SendUserToLoginActivity(); // when account is created successfully then send the user to LoginActivity to login
+                                SendUserToMainActivity(); // when account is created successfully then send the user to MainActivity to login
                                 Toast.makeText(RegisterActivity.this, "Account Created Successfully...", Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss(); // when account is created then dismiss the loadingBar
                             }else{ // if any error occur
@@ -103,5 +103,13 @@ public class RegisterActivity extends AppCompatActivity {
     private void SendUserToLoginActivity() {
         Intent loginIntent = new Intent(RegisterActivity.this,LoginActivity.class);
         startActivity(loginIntent);
+    }
+    private void SendUserToMainActivity() {
+        Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
+
+        // this will stop the user to get again the RegisterActivity when user press the back button
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(mainIntent);
+        finish(); // part of addFlags line
     }
 }
