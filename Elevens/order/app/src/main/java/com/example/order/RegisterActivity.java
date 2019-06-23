@@ -102,7 +102,11 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void SendUserToLoginActivity() {
         Intent loginIntent = new Intent(RegisterActivity.this,LoginActivity.class);
+
+        // this will stop the user to get again the LoginActivity when user press the back button
+        loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(loginIntent);
+        finish(); // part of addFlags line
     }
     private void SendUserToMainActivity() {
         Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
