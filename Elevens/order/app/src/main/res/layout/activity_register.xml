@@ -6,6 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".RegisterActivity">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
     <ImageView
         android:id="@+id/register_image"
         android:layout_width="match_parent"
@@ -77,4 +85,8 @@
         android:textSize="17sp"
         android:textStyle="bold"
         android:textColor="@color/colorPrimaryDark"/>
+
+        </RelativeLayout>
+    </ScrollView>
+
 </RelativeLayout>

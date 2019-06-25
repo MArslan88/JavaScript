@@ -1,6 +1,7 @@
 package com.example.order;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -8,9 +9,15 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
+    private DatabaseReference RootRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+        RootRef = FirebaseDatabase.getInstance().getReference();
 
         mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
@@ -50,12 +59,33 @@ public class MainActivity extends AppCompatActivity {
 
         if(currentUser == null){ // this means the user is not Authenticated so we will send him first at login activity
             SendUserToLoginActivity();
+        }else{ // if user is already logedIn
+            VerifyUserExistance();
         }
+    }
+
+    private void VerifyUserExistance() {
+        String currentUserID = mAuth.getCurrentUser().getUid(); // we will get the id of the current user
+        // we are checking for this user Authentication
+        RootRef.child("Users").child(currentUserID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if((dataSnapshot.child("name").exists())){
+                   // Toast.makeText(MainActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
+                }else{ // if the name is not available so it means the user is new user
+                    SendUserToSettingActivity();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void SendUserToLoginActivity() {
         Intent loginIntent = new Intent(MainActivity.this,LoginActivity.class);
-
         // this will stop the user to get again the MainActivity when user press the back button
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(loginIntent);
@@ -80,7 +110,15 @@ public class MainActivity extends AppCompatActivity {
             SendUserToLoginActivity();
         }
         if (item.getItemId()== R.id.main_settings_option){
+            SendUserToSettingActivity();
         }
         return true;
+    }
+    private void SendUserToSettingActivity() {
+        Intent settingIntent = new Intent(MainActivity.this,SettingActivity.class);
+        // this will stop the user to get again the MainActivity when user press the back button
+        settingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(settingIntent);
+        finish();
     }
 }

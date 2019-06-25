@@ -16,6 +16,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -24,6 +26,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView AlreadyHaveAccountLink;
 
     private FirebaseAuth mAuth;
+    private DatabaseReference RootRef;
     private ProgressDialog loadingBar;
 
 
@@ -33,6 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         mAuth = FirebaseAuth.getInstance(); // that was creating a problem so i added this com.google.gms:google-services:4.2.0 in the gradle project
+        RootRef= FirebaseDatabase.getInstance().getReference();
 
         InitializeFields(); // initializing the components
 
@@ -76,6 +80,10 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
+                                // to get the user id from the Firebase
+                                String currentUserID = mAuth.getCurrentUser().getUid();
+                                RootRef.child("Users").child(currentUserID).setValue("");
+
                                 SendUserToMainActivity(); // when account is created successfully then send the user to MainActivity to login
                                 Toast.makeText(RegisterActivity.this, "Account Created Successfully...", Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss(); // when account is created then dismiss the loadingBar

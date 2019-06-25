@@ -45,7 +45,6 @@
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
-                        android:layout_toRightOf="@+id/image"
                         android:orientation="vertical"
                         android:paddingLeft="10dp">
 
@@ -70,6 +69,9 @@
                             android:textStyle="bold"
                             android:textColor="@color/colorDescriptionText"/>
 
+
+
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -86,6 +88,7 @@
                                 android:textColor="@color/colorDescriptionText"/>
 
                             <Button
+                                android:id="@+id/seekh_kabab_btn"
                                 android:layout_width="130dp"
                                 android:layout_height="wrap_content"
                                 android:background="@color/colorAddToCartBtn"
@@ -138,7 +141,6 @@
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
-                        android:layout_toRightOf="@+id/image"
                         android:orientation="vertical"
                         android:paddingLeft="10dp">
 
@@ -178,6 +180,7 @@
                                 android:textColor="@color/colorDescriptionText"/>
 
                             <Button
+                                android:id="@+id/bbq_btn"
                                 android:layout_width="130dp"
                                 android:layout_height="wrap_content"
                                 android:background="@color/colorAddToCartBtn"
@@ -229,7 +232,6 @@
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
-                        android:layout_toRightOf="@+id/image"
                         android:orientation="vertical"
                         android:paddingLeft="10dp">
 
@@ -269,6 +271,7 @@
                                 android:textColor="@color/colorDescriptionText"/>
 
                             <Button
+                                android:id="@+id/spicy_ranch_btn"
                                 android:layout_width="130dp"
                                 android:layout_height="wrap_content"
                                 android:background="@color/colorAddToCartBtn"
@@ -321,7 +324,6 @@
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
-                        android:layout_toRightOf="@+id/image"
                         android:orientation="vertical"
                         android:paddingLeft="10dp">
 
@@ -361,6 +363,7 @@
                                 android:textColor="@color/colorDescriptionText"/>
 
                             <Button
+                                android:id="@+id/afghani_tikka_btn"
                                 android:layout_width="130dp"
                                 android:layout_height="wrap_content"
                                 android:background="@color/colorAddToCartBtn"
@@ -413,7 +416,6 @@
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
-                        android:layout_toRightOf="@+id/image"
                         android:orientation="vertical"
                         android:paddingLeft="10dp">
 
@@ -453,6 +455,99 @@
                                 android:textColor="@color/colorDescriptionText"/>
 
                             <Button
+                                android:id="@+id/behari_chicken_btn"
+                                android:layout_width="130dp"
+                                android:layout_height="wrap_content"
+                                android:background="@color/colorAddToCartBtn"
+                                android:padding="2dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="5dp"
+                                android:text="Add to cart"
+                                android:textAllCaps="true"
+                                android:textColor="@android:color/background_light"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
+
+
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_height="@dimen/list_item_height">
+
+
+
+                <LinearLayout
+                    android:background="@drawable/background_pic"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="110dp"
+                        android:layout_height="170dp"
+                        android:src="@drawable/chicken_arabia" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/list_item_height"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:orientation="vertical"
+                        android:paddingLeft="10dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_centerHorizontal="true"
+                            android:text="chicken arabia"
+                            android:textAllCaps="true"
+                            android:layout_marginTop="10dp"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorHeadingText"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:layout_centerHorizontal="true"
+                            android:text="Dip in to our succulent pieces of grilled chicken, green peppers, onions and fresh tomatoes."
+                            android:layout_marginTop="2dp"
+                            android:textSize="10sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorDescriptionText"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="70dp"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:text="Rs.440"
+                                android:layout_marginTop="10dp"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/colorDescriptionText"/>
+
+                            <Button
+                                android:id="@+id/checken_arabia_btn"
                                 android:layout_width="130dp"
                                 android:layout_height="wrap_content"
                                 android:background="@color/colorAddToCartBtn"
@@ -482,4 +577,5 @@
 
         </LinearLayout>
     </ScrollView>
+
 </LinearLayout>
