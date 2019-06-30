@@ -5,14 +5,10 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,32 +19,24 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.net.Proxy.Type.HTTP;
-
-public class FormActivity extends AppCompatActivity {
+public class StartersFormActivity extends AppCompatActivity {
 
     int quantity = 1;
 
     private Button submitOrder;
     String addSmallStatus,addRegularStatus,addLargeStatus;
     String selectedFlavour, userName,userAddress, userNumber;
+    int selectedPrice;
 
 
     private String currentUserID;
     private FirebaseAuth mAuth;
     private DatabaseReference RootRef;
 
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_form);
+        setContentView(R.layout.activity_starters_form);
 
         mAuth=FirebaseAuth.getInstance();
         currentUserID=mAuth.getCurrentUser().getUid();
@@ -65,28 +53,29 @@ public class FormActivity extends AppCompatActivity {
 
         RetrieveUserInfo(); // to retrieve user information
         RetrieveFlavour(); // to retrieve user selected Flavour
+        RetrievePrice(); // to retrieve user selected price according to Flavour;
 
     }
 
 
-
     private void CheckOut() {
 
-        // Figure out if the user want small size pizza
-        CheckBox smallSizeCheckBox = (CheckBox) findViewById(R.id.smallSize);
-        boolean hasSmallSize = smallSizeCheckBox.isChecked();
+        // Figure out if the user want one Piece
+        CheckBox onePcsCheckBox = (CheckBox) findViewById(R.id.one_pcs);
+        boolean hasOnePcs = onePcsCheckBox.isChecked();
 
-        // Figure out if the user want regular size pizza
-        CheckBox regularSizeCheckBox = (CheckBox) findViewById(R.id.regularSize);
-        boolean hasRegularSize = regularSizeCheckBox.isChecked();
+        // Figure out if the user want one Pieces
+        CheckBox twoPcsCheckBox = (CheckBox) findViewById(R.id.two_pcs);
+        boolean hasTwoPcs = twoPcsCheckBox.isChecked();
 
-        // Figure out if the user want large size pizza
-        CheckBox largeSizeCheckBox = (CheckBox) findViewById(R.id.largeSize);
-        boolean hasLargeSize = largeSizeCheckBox.isChecked();
+        // Figure out if the user want one Pieces
+        CheckBox fourPcsCheckBox = (CheckBox) findViewById(R.id.four_pcs);
+        boolean hasFourPcs = fourPcsCheckBox.isChecked();
 
-        if(hasSmallSize|hasRegularSize|hasLargeSize){
-            int price = calculatePrice(hasSmallSize, hasRegularSize,hasLargeSize);
-            String priceMessage = createOrderSummary(price, hasSmallSize, hasRegularSize,hasLargeSize);
+        if(hasOnePcs|hasTwoPcs|hasFourPcs){
+            int price = calculatePrice(hasOnePcs, hasTwoPcs,hasFourPcs);
+            int quantity = calculateQuantity(hasOnePcs,hasTwoPcs,hasFourPcs);
+            String priceMessage = createOrderSummary(price, hasOnePcs, hasTwoPcs,hasFourPcs,quantity);
 
             // To submit the order through SMS.
             Uri uri = Uri.parse("smsto:03419320547");
@@ -94,37 +83,54 @@ public class FormActivity extends AppCompatActivity {
             it.putExtra("sms_body", priceMessage);
             startActivity(it);
         }else{
-            Toast.makeText(this, "Kindly Select the Pizza Size...!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Kindly Select the No. of Pcs you want...!", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private int calculatePrice(boolean addSmallSize, boolean addRegularSize, boolean addLargeSize) {
+    private int calculatePrice(boolean addOnePcs, boolean addTwoPcs, boolean addFourPcs) {
         int basePrice = 0;
+        //int newPrice = selectedPrice;
 
-        if (addSmallSize) {
-            basePrice += 440;
+
+        if (addOnePcs) {
+            basePrice += selectedPrice;
         }
-        if (addRegularSize) {
-            basePrice += 1200;
+        if (addTwoPcs) {
+            basePrice = basePrice + (selectedPrice * 2);
         }
-        if (addLargeSize) {
-            basePrice += 1800;
+        if (addFourPcs) {
+            basePrice = basePrice + (selectedPrice * 4);
         }
-        return quantity * basePrice;
+        return basePrice;
     }
 
-    private String createOrderSummary(int price, boolean addSmallSize, boolean addRegularSize, boolean addLargeSize) {
+    private int calculateQuantity(boolean addOnePcs, boolean addTwoPcs, boolean addFourPcs){
+        int baseQuantity = 0;
 
-        if(addSmallSize){
+        if (addOnePcs) {
+            baseQuantity += 1;
+        }
+        if (addTwoPcs) {
+            baseQuantity += 2;
+        }
+        if (addFourPcs) {
+            baseQuantity += 4;
+        }
+        return quantity * baseQuantity;
+    }
+
+    private String createOrderSummary(int price, boolean addOnePcs, boolean addTwoPcs, boolean addFourPcs, int quantity) {
+
+        if(addOnePcs){
             addSmallStatus="Yes";
         }else{
             addSmallStatus="No";
         }
-        if(addRegularSize){
+        if(addTwoPcs){
             addRegularStatus="Yes";
         }else{
             addRegularStatus="No";
-        }if(addLargeSize){
+        }if(addFourPcs){
             addLargeStatus="Yes";
         }else{
             addLargeStatus="No";
@@ -136,9 +142,7 @@ public class FormActivity extends AppCompatActivity {
         priceMessage += "\nAddress: " + userAddress ;
         priceMessage += "\nMobile Number: " + userNumber ;
         priceMessage += "\nFlavour: " + selectedFlavour;
-        priceMessage += "\nAdd Small Size? " + addSmallStatus;
-        priceMessage += "\nAdd Regular Size? " + addRegularStatus;
-        priceMessage += "\nAdd Regular Size? " + addLargeStatus;
+        priceMessage += "\nNo. of Pcs: " + quantity; // No. of pcs according to price should be here
         priceMessage += "\n\nTotal: Rs." + price;
         priceMessage += "\nThank you!";
         return priceMessage;
@@ -195,5 +199,27 @@ public class FormActivity extends AppCompatActivity {
                 });
     }
 
+    private void RetrievePrice() {
+
+        RootRef.child("Users").child(currentUserID).child("prices")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        if((dataSnapshot.exists()) && (dataSnapshot.hasChild("price") )){ // if user is updated selected Flavour then
+
+                            String retrievePrice = dataSnapshot.child("price").getValue().toString();
+                            // retrieveFlavour will be shown to message withe the name selectedFlavour
+                            selectedPrice= Integer.valueOf(retrievePrice) ;
+                        }else{ // if none of these exist
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
 
 }

@@ -55,6 +55,15 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        PhoneLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(LoginActivity.this, "Please enter your number with COUNTRY CODE.", Toast.LENGTH_SHORT).show();
+                Intent phoneLoginIntent = new Intent(LoginActivity.this,PhoneLoginActivity.class);
+                startActivity(phoneLoginIntent);
+            }
+        });
+
     }
 
     private void AllowUserToLogin() {
