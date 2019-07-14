@@ -48,13 +48,14 @@ var num1 = 5;
 
         // now a=7
 
-        alert(a); //7
-        alert(b); //12
+       // alert(a); //7
+        //alert(b); //12
 
         var a = 4;
         var b = a++ + ++a; // b = 4 + 6 = 10
 
         // now a=6
 
-        alert(a); //6
-        alert(b); //10
+        //alert(a); //6
+        //alert(b); //10
+        alert(4 * "4")
